@@ -24,8 +24,9 @@ var GraphBox = React.createClass({
       edges: edges,
       currentID: 7,
       networkData: null,
-      
-      fromNode: {}
+
+      fromNode: {},
+      graphResult: ''
     }
   },
   addNewNode: function(nodeLabel, relationshipLabel, fromNode) {
@@ -56,18 +57,29 @@ var GraphBox = React.createClass({
   saveGraph: function(){
     var nodes = JSON.stringify(this.state.nodes._data);
     var edges = JSON.stringify(this.state.edges._data);
+    var com = this;
     console.log(nodes, edges);
     $.ajax({
       url: '/graph/save',
       type: 'POST',
       data: {edges: edges, nodes: nodes},
       success: function(res){
-        console.log(res);
+        var alertGraphResult = com.refs.alertGraphResult;
+        if (res === 'success') {
+          com.setState({
+            graphResult: 'Graph saved successfully!'
+          });
+        } else {
+          com.setState({
+            graphResult: 'Graph saved failed!'
+          });
+        }
+        alertGraphResult.show();
       },
       fail: function(){
 
       }
-    })
+    });
   },
   selectNode: function(nodeData) {
     this.setState({
@@ -99,6 +111,11 @@ var GraphBox = React.createClass({
           message="Node added successfully!"
           autoHideDuration={2000}
           ref="alertNodeAdded"/>
+        <Snackbar
+          message={this.state.graphResult}
+          autoHideDuration={2000}
+          ref="alertGraphResult"/>
+
       </div>
     )
   }
