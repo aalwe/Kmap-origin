@@ -8,7 +8,7 @@ function saveGraph(req, res) {
 		// console.log(data)
 		res.status(200).send('success');
 	}, function(err){
-		// console.log(err);
+		console.log(err);
 		res.status(500).send(err);
 	})
 

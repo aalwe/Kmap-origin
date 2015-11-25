@@ -24,7 +24,7 @@ var GraphBox = React.createClass({
       edges: edges,
       currentID: 7,
       networkData: null,
-
+      
       fromNode: {}
     }
   },
